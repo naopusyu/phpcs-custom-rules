@@ -3,7 +3,17 @@
     "description": "Custom rules for PHP_CodeSniffer",
     "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "naopusyu"
+        }
+    ],
     "require": {
         "squizlabs/php_codesniffer": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Naopusyu\\PHPCSCustomRules\\": "src/PHPCSCustomRules/"
+        }
     }
 }
