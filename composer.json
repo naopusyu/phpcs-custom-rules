@@ -1,5 +1,6 @@
 {
     "name": "naopusyu/phpcs-custom-rules",
+    "description": "Custom rules for PHP_CodeSniffer",
     "type": "library",
     "license": "MIT",
     "require": {
