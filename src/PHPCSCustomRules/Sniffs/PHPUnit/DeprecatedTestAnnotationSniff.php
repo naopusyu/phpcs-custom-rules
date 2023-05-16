@@ -24,14 +24,14 @@ class DeprecatedTestAnnotationSniff implements Sniff
 
             $name = $phpcsFile->findNext(T_STRING, $function);
 
-            if (str_starts_with($tokens[$name]['content'], 'test') === false) {
+            if (substr($tokens[$name]['content'], 0, 4) !== 'test') {
                 $error = 'The "@test" annotation is deprecated. Method names must be prefixed with "test".';
                 $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Found');
 
                 if ($fix === true) {
                     // prefixed the method name with test
                     $new_name = 'test' . ucfirst($tokens[$name]['content']);
-                    $phpcsFile->fixer->replaceToken($name + 2, $new_name);
+                    $phpcsFile->fixer->replaceToken($name, $new_name);
 
                     // remove @test annotation line
                     $start = $stackPtr + 1;
