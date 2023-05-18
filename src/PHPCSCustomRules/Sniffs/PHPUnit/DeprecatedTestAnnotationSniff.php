@@ -31,22 +31,7 @@ class DeprecatedTestAnnotationSniff implements Sniff
                     return;
                 }
 
-                $phpcsFile->fixer->beginChangeset();
-
-                // prefixed the method name with test
-                $newName = 'test' . ucfirst($tokens[$name]['content']);
-                $phpcsFile->fixer->replaceToken($name, $newName);
-
-                // remove @test annotation
-                $phpcsFile->fixer->replaceToken($stackPtr, '');
-                $line = $tokens[$stackPtr]['line'];
-                $i = $stackPtr;
-                while ($tokens[$i]['line'] === $line) {
-                    $phpcsFile->fixer->replaceToken($i, '');
-                    $i--;
-                }
-                $phpcsFile->fixer->replaceToken($i, '');
-
+                $tagLine = $tokens[$stackPtr]['line'];
                 $openTag = $phpcsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPtr);
                 $closeTag = $tokens[$openTag]['comment_closer'];
 
@@ -55,6 +40,10 @@ class DeprecatedTestAnnotationSniff implements Sniff
                     $removeDocBlock = false;
                 } else {
                     for ($i = $openTag; $i <= $closeTag; $i++) {
+                        if ($tokens[$i]['line'] === $tagLine) {
+                            continue;
+                        }
+
                         if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
                             $removeDocBlock = false;
                             break;
@@ -62,12 +51,24 @@ class DeprecatedTestAnnotationSniff implements Sniff
                     }
                 }
 
+                $phpcsFile->fixer->beginChangeset();
+
+                // prefixed the method name with test
+                $newName = 'test' . ucfirst($tokens[$name]['content']);
+                $phpcsFile->fixer->replaceToken($name, $newName);
+
+                // remove @test annotation
+                $end = $phpcsFile->findNext(T_DOC_COMMENT_WHITESPACE, $stackPtr, null, false, $phpcsFile->eolChar);
+                for ($i = $end; $tokens[$i]['line'] === $tagLine; $i--) {
+                    $phpcsFile->fixer->replaceToken($i, '');
+                }
+
+                // remove doc block
                 if ($removeDocBlock === true) {
                     $line = $tokens[$openTag]['line'];
-                    for ($i = $closeTag; $tokens[$i]['line'] >= $line; $i--) {
+                    for ($i = ($closeTag + 1); $tokens[$i]['line'] >= $line; $i--) {
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
-                    $phpcsFile->fixer->replaceToken($i, '');
                 }
 
                 $phpcsFile->fixer->endChangeset();
