@@ -25,14 +25,38 @@ class ShortFormTypeKeywordsSniff implements Sniff
                 $content = $tokens[$i]['content'];
 
                 [$type] = explode(' ', $content);
-                if ($type !== 'boolean' && $type !== 'integer') {
-                    continue;
-                }
 
-                $error = 'Short form type keywords must be used. Found: %s';
-                $data = [$type];
-                
-                $phpcsFile->addError($error, $stackPtr, 'Found', $data);
+                $types = explode('|', $type);
+
+                foreach ($types as $t) {
+                    $lower = strtolower($t);
+                    switch ($lower) {
+                        case 'bool':
+                            if ($type !== 'bool') {
+                                $error = 'Short form type keywords must be used. Found: %s';
+                                $data = [$t];                            
+                                $phpcsFile->addError($error, $i, 'Found', $data);            
+                            }
+                            break;            
+                        case 'boolean':
+                            $error = 'Short form type keywords must be used. Found: %s';
+                            $data = [$t];                            
+                            $phpcsFile->addError($error, $i, 'Found', $data);            
+                            break;
+                        case 'int':
+                            if ($type !== 'int') {
+                                $error = 'Short form type keywords must be used. Found: %s';
+                                $data = [$t];                            
+                                $phpcsFile->addError($error, $i, 'Found', $data);            
+                            }
+                            break;            
+                        case 'integer':
+                            $error = 'Short form type keywords must be used. Found: %s';
+                            $data = [$t];                            
+                            $phpcsFile->addError($error, $i, 'Found', $data);
+                            break;
+                    }
+                }
             }
         }
     }
