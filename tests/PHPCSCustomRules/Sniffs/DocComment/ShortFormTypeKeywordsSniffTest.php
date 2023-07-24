@@ -23,6 +23,6 @@ class ShortFormTypeKeywordsSniffTest extends TestCase
         $phpcsFile->process();
         $foundErrors = $phpcsFile->getErrors();
         $lines = array_keys($foundErrors);
-        $this->assertSame([6, 7, 20, 21], $lines);
+        $this->assertSame([14, 15, 30, 31, 38, 39, 46, 47], $lines);
     }
 }
