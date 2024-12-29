@@ -1,6 +1,6 @@
 # phpcs-custom-rules
 
-[PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)のカスタムルールを作ってみた
+[PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer/)のカスタムルールを作ってみた
 
 ## Installation
 
