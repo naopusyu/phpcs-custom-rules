@@ -30,4 +30,30 @@ class CodeTest
     public function insert()
     {
     }
+
+    public function dataProviderMethod(): array
+    {
+        return [
+            ['data1'],
+            ['data2'],
+            ['data3'],
+        ];
+    }
+
+    public static function dataProviderStaticMethod(): array
+    {
+        return [
+            ['data1'],
+            ['data2'],
+            ['data3'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderMethod
+     * @dataProvider dataProviderStaticMethod
+     */
+    public function testWithDataProvider($data)
+    {
+    }
 }
