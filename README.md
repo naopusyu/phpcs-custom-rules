@@ -4,6 +4,8 @@
 
 ## Installation
 
+PHP 8.4〜8.6 と PHP_CodeSniffer 4 系が必要です。PHP_CodeSniffer 3 系を使う場合は、このパッケージの旧版を利用してください。
+
 ```
 composer req naopusyu/phpcs-custom-rules --dev
 ```
@@ -26,4 +28,13 @@ Then run the phpcs command.
 
 ```
 vendor/bin/phpcs src
+```
+
+## Development
+
+リポジトリのテストには PHPUnit 13 系を使用します。
+
+```sh
+composer install
+composer test
 ```
